@@ -1,3 +1,4 @@
+import 'package:farm/resources/languages/languages.dart';
 import 'package:farm/resources/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Farm Demo',
+      translations: Languages(),
+      locale: Locale('np', 'NPL'),
+      fallbackLocale: Locale('np', 'NPL'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
