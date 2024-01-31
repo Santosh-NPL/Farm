@@ -17,9 +17,19 @@ class Languages extends Translations{
       'no_internet_message': 'Please check your internet connection and try again.',
       'general_message': 'Please check your internet connection and try again.',
 
-
       //buttons
       'retry' : 'Retry',
+
+
+      // login
+      'login' : 'Login',
+      'login_to_your_account': 'Login to your Account',
+      'dont_have_an_account' : 'Don\'t have an account',
+      'sign_up': 'Sign up',
+      'mobile': 'Mobile',
+      'password': 'Password',
+      'english_full_name' : 'Full Name',
+      'already_have_an_account' : 'Already have an account ',
     },
 
 
@@ -40,6 +50,19 @@ class Languages extends Translations{
 
       //button
       'retry' : 'पुन: प्रयास गर्नुहोस्',
+
+      // login
+      'login' : 'साइन इन',
+      'login_to_your_account': 'तपाईँको खातामा लगइन गर्नुहोस्',
+      'dont_have_an_account' : 'के तपाईंसँग खाता छैन?',
+      'sign_up': 'खाता सिर्जना गर्नुहोस्',
+      'mobile': 'मोबाइल नम्बर',
+      'password': 'पासवर्ड',
+      'english_full_name' : 'अंग्रेजीमा पूरा नाम',
+      'address': 'ठेगाना',
+      'dob': 'जन्ममिति',
+      'already_have_an_account' : 'पहिल्यै तपाईंसँग खाता छ?',
+
     }
 
 

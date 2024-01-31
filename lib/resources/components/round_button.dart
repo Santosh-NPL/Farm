@@ -35,3 +35,22 @@ class RoundButton extends StatelessWidget {
     );
   }
 }
+
+
+// MaterialButton(
+// minWidth: double.infinity,
+// height: 60,
+// onPressed: (){},
+// color: AppColor.primaryColor,
+// elevation: 0,
+// shape: RoundedRectangleBorder(
+// borderRadius: BorderRadius.circular(50)
+// ),
+// child: Text(
+// 'login'.tr, style: TextStyle(
+// fontWeight: FontWeight.w600,
+// fontSize: 18,
+// color: AppColor.white,
+// ),
+// ),
+// ),
