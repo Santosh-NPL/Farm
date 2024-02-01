@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: (){
-                        Get.toNamed(RouteName.signupScreen);
+                        Get.toNamed(RouteName.mobileScreen);
                       },
                       child: Text(
                         "sign_up".tr,

@@ -6,15 +6,19 @@ class InputFiles extends StatefulWidget {
   const InputFiles({
     Key? key,
     required this.label,
+    this.prefixText,
     this.obscureText = false,
     this.suffix,
-    this.inputType = TextInputType.text, // Default input type is TextInputType.text
+    this.inputType = TextInputType.text,
+    this.showPrefix = false, // Added a showPrefix parameter with a default value
   }) : super(key: key);
 
   final String label;
+  final String? prefixText;
   final bool obscureText;
   final Widget? suffix;
   final TextInputType inputType;
+  final bool showPrefix; // Added showPrefix parameter
 
   @override
   _InputFilesState createState() => _InputFilesState();
@@ -40,6 +44,7 @@ class _InputFilesState extends State<InputFiles> {
           height: 5,
         ),
         TextField(
+          style: TextStyle(fontSize: 18),
           obscureText: widget.obscureText && !_isPasswordVisible,
           keyboardType: widget.inputType,
           inputFormatters: widget.inputType == TextInputType.number
@@ -55,7 +60,9 @@ class _InputFilesState extends State<InputFiles> {
                 });
               },
               child: Icon(
-                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                _isPasswordVisible
+                    ? Icons.visibility
+                    : Icons.visibility_off,
                 color: AppColor.primaryColor,
               ),
             )
@@ -66,6 +73,16 @@ class _InputFilesState extends State<InputFiles> {
             border: OutlineInputBorder(
               borderSide: BorderSide(color: AppColor.primaryColor),
             ),
+            prefix: widget.showPrefix
+                ? Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                widget.prefixText ?? '',
+                style:
+                TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            )
+                : null, // Show prefix only if showPrefix is true
           ),
         ),
         SizedBox(

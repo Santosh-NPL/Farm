@@ -30,6 +30,8 @@ class Languages extends Translations{
       'password': 'Password',
       'english_full_name' : 'Full Name',
       'already_have_an_account' : 'Already have an account ',
+      'lets_start': 'Let\'s get started',
+      'slogan': 'Never a better time than no to start',
     },
 
 
@@ -62,7 +64,10 @@ class Languages extends Translations{
       'address': 'ठेगाना',
       'dob': 'जन्ममिति',
       'already_have_an_account' : 'पहिल्यै तपाईंसँग खाता छ?',
-
+      'lets_start': 'सुरु गरौं',
+      'slogan' : 'गाई पालनमा समृद्धि, दुधमा आनन्द: दिनदिन वृद्धि गर्दै गाई फार्मिङ्ग।',
+      'add_mobile': 'आफ्नो मोबाइल नम्बर टाइप गर्नुहोस्। हामी तपाईलाई प्रमाणिकरण कोड पठाउने छौँ ',
+      'send': 'पठाउनुहोस्',
     }
 
 

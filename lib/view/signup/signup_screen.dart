@@ -90,7 +90,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       child: RoundButton(
-                        title: 'signup'.tr,
+                        title: 'sign_up'.tr,
                         onPress: () {},
                         width: double.infinity,
                       ),
