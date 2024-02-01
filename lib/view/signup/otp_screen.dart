@@ -1,4 +1,7 @@
+import 'package:farm/app/controller/otp_controller.dart';
+import 'package:farm/resources/components/round_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({Key? key}) : super(key: key);
@@ -8,6 +11,10 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+
+  final otpCtrl = Get.put(OTPController());
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,48 +80,44 @@ class _OTPScreenState extends State<OTPScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _textFieldOTP(first: true, last: false),
-                        _textFieldOTP(first: false, last: false),
-                        _textFieldOTP(first: false, last: false),
-                        _textFieldOTP(first: false, last: true),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.purple),
-                          shape:
-                          MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(14.0),
-                          child: Text(
-                            'Verify',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _textFieldOTP(first: true, last: false, controller: otpCtrl.oneController.value),
+                          _textFieldOTP(first: false, last: false, controller: otpCtrl.twoController.value),
+                          _textFieldOTP(first: false, last: false, controller: otpCtrl.threeController.value),
+                          _textFieldOTP(first: false, last: true, controller: otpCtrl.fourController.value),
+                        ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 22,
+                      ),
+
+
+                    ],
+                  ),
                 ),
               ),
+
+              Obx(() => RoundButton(
+                  loading: otpCtrl.loading.value,
+                  title: 'send'.tr,
+                  onPress: (){
+
+                    // Get.snackbar("check", "message");
+
+                    if(_formKey.currentState!.validate()){
+                      otpCtrl.otpApi();
+                    }
+                  }
+              )
+              ),
+
+
               SizedBox(
                 height: 18,
               ),
@@ -130,15 +133,33 @@ class _OTPScreenState extends State<OTPScreen> {
               SizedBox(
                 height: 18,
               ),
-              Text(
-                "Resend New Code",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple,
-                ),
-                textAlign: TextAlign.center,
+              InkWell(
+                onTap: () {
+                  otpCtrl.requestNewCode();
+                },
+                child: Obx(() {
+                  final buttonText = otpCtrl.loadingResend.value
+                      ? 'Resend New Code (${otpCtrl.remainingTime.value}s)'
+                      : 'Resend New Code';
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        buttonText,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      if (otpCtrl.loadingResend.value) CircularProgressIndicator(),
+                    ],
+                  );
+                }),
               ),
+
             ],
           ),
         ),
@@ -146,12 +167,15 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  Widget _textFieldOTP({required bool first, last}) {
+
+
+  Widget _textFieldOTP({required bool first, last, required TextEditingController controller}) {
     return Container(
       height: 70,
       child: AspectRatio(
         aspectRatio: 1.0,
-        child: TextField(
+        child: TextFormField(
+          controller: controller,
           autofocus: true,
           onChanged: (value) {
             if (value.length == 1 && last == false) {
@@ -167,6 +191,12 @@ class _OTPScreenState extends State<OTPScreen> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           keyboardType: TextInputType.number,
           maxLength: 1,
+          validator:(value){
+            if (value == null || value.isEmpty) {
+                return "Empty";
+            }
+            return null;
+          },
           decoration: InputDecoration(
             counter: Offstage(),
             enabledBorder: OutlineInputBorder(
@@ -180,4 +210,5 @@ class _OTPScreenState extends State<OTPScreen> {
       ),
     );
   }
+
 }

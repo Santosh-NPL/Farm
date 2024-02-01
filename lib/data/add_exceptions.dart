@@ -72,3 +72,7 @@ class FetchDataError extends AppExceptions{
 class Conflict extends AppExceptions{
   Conflict([String? message]) : super(message, 'Conflict:  ');
 }
+
+class UnProcessableEntity extends AppExceptions{
+  UnProcessableEntity([String? message]) : super(message, 'UnProcessable Entity:  ');
+}

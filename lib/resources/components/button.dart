@@ -16,7 +16,7 @@ class _ButtonCreatedState extends State<ButtonCreated> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          widget.onPress();
+          widget.onPress;
         },
         style: ButtonStyle(
           foregroundColor:

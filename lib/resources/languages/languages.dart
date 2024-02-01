@@ -36,9 +36,6 @@ class Languages extends Translations{
 
 
 
-
-
-
     'np_NPL' : {
       'farm' : 'फार्म',
       'email_hint' : 'इमेल प्रविष्ट गर्नुहोस्',

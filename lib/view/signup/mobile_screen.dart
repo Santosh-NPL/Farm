@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
+import 'package:farm/app/controller/mobile_register_controller.dart';
 import 'package:farm/resources/app_color.dart';
-import 'package:farm/resources/components/button.dart';
-import 'package:farm/resources/components/input_field.dart';
+
+import 'package:farm/resources/components/round_button.dart';
+import 'package:farm/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +18,11 @@ class MobileScreen extends StatefulWidget {
 }
 
 class _MobileScreenState extends State<MobileScreen> {
+
+
+  final mobileCtrl = Get.put(MobileRegisterController());
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,37 +83,82 @@ class _MobileScreenState extends State<MobileScreen> {
 
                   borderRadius: BorderRadius.circular(12)
                 ),
-                child: Column(
-                  children: [
-                    InputFiles(label: 'mobile'.tr, inputType: TextInputType.number, showPrefix: true, prefixText: '(+977)',),
-                    // TextFormField(
-                    //   keyboardType: TextInputType.number,
-                    //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    //   decoration: InputDecoration(
-                    //     enabledBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: AppColor.secondaryColor),
-                    //       borderRadius: BorderRadius.circular(10),
-                    //     ),
-                    //     focusedBorder: OutlineInputBorder(
-                    //       borderSide: BorderSide(color: AppColor.secondaryColor),
-                    //       borderRadius: BorderRadius.circular(10),
-                    //     ),
-                    //     prefix: Padding(
-                    //       padding: EdgeInsets.symmetric(horizontal: 8),
-                    //       child: Text(
-                    //         '(+९७७)',
-                    //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('mobile'.tr, style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primaryColor,
+                          ),),
+                          SizedBox(height: 5,),
+
+                          TextFormField(
+                            controller: mobileCtrl.mobileController.value,
+                            validator: (value){
+                              if(value!.isEmpty){
+                                Utils.snackBar('mobile'.tr, 'Enter Mobile no.');
+                                return 'Enter mobile no';
+                              }
+                              return null;
+                            },
+                            style: TextStyle(fontSize: 18),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColor.primaryColor),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColor.primaryColor),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // TextFormField(
+                      //   keyboardType: TextInputType.number,
+                      //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      //   decoration: InputDecoration(
+                      //     enabledBorder: OutlineInputBorder(
+                      //       borderSide: BorderSide(color: AppColor.secondaryColor),
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     focusedBorder: OutlineInputBorder(
+                      //       borderSide: BorderSide(color: AppColor.secondaryColor),
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     prefix: Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: 8),
+                      //       child: Text(
+                      //         '(+९७७)',
+                      //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 20,),
-              ButtonCreated(buttonText: 'send'.tr, onPress: (){
-                Get.toNamed(RouteName.otpScreen);
-                }
+              Obx(() => RoundButton(
+                  loading: mobileCtrl.loading.value,
+                  title: 'send'.tr,
+                  onPress: (){
+
+                    // Get.snackbar("check", "message");
+
+                    if(_formKey.currentState!.validate()){
+                      mobileCtrl.mobileApi();
+                    }
+                  }
+              )
               ),
             ],
           ),

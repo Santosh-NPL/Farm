@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:farm/data/add_exceptions.dart';
@@ -15,7 +16,12 @@ class NetworkApiService extends BaseApiServices {
   Future<dynamic> getApi(String url) async{
     dynamic responseJson;
     try{
-      final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 20));
+      final response = await http.get(Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any additional headers as needed
+        },
+      ).timeout(const Duration(seconds: 20));
       responseJson = returnResponse(response);
     }on SocketException{
       throw InternetException('');
@@ -32,7 +38,7 @@ class NetworkApiService extends BaseApiServices {
       final response = await http.get(Uri.parse(url),
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token', // Include the token in the request headers
-          // Add any other headers if needed
+          HttpHeaders.contentTypeHeader: 'application/json', // Specify content type as JSON
         },
       ).timeout(const Duration(seconds: 20));
       responseJson = returnResponse(response);
@@ -53,7 +59,7 @@ class NetworkApiService extends BaseApiServices {
         url,
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token',
-          // Add any other headers if needed
+          HttpHeaders.contentTypeHeader: 'application/json', // Specify content type as JSON
         },
       ).timeout(const Duration(seconds: 20));
 
@@ -99,8 +105,18 @@ class NetworkApiService extends BaseApiServices {
    dynamic responseJson;
    try{
      final response = await http.post(Uri.parse(url),
-     body: jsonEncode(data)
-     ).timeout(const Duration(seconds: 20));
+     body: jsonEncode(data),
+       headers: {
+         'Content-Type': 'application/json',
+         'Accept':'application/json',
+         // Add any additional headers as needed
+       },
+
+     ).timeout(const Duration(seconds: 30));
+     if(kDebugMode){
+       print(response.statusCode.toString());
+
+     }
      responseJson = returnResponse(response);
    }on SocketException{
      throw InternetException('');
@@ -139,6 +155,8 @@ class NetworkApiService extends BaseApiServices {
         throw RequestTimeOut(response.body);
       case 409:
         throw Conflict(response.body);
+      case 422:
+          throw UnProcessableEntity(response.body);
       case 500:
         throw InternalServerError(response.body);
       case 501:
@@ -151,6 +169,8 @@ class NetworkApiService extends BaseApiServices {
         throw GatewayTimeout(response.body);
 
         default:
+          print('Unexpected Status Code: ${response.statusCode}');
+          print('Response Body: ${response.body}');
           throw FetchDataError(response.body);
     }
   }

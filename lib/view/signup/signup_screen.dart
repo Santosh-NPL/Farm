@@ -1,3 +1,4 @@
+import 'package:farm/app/controller/register_controller.dart';
 import 'package:farm/resources/app_color.dart';
 import 'package:farm/resources/components/date_picker.dart';
 import 'package:farm/resources/components/input_field.dart';
@@ -5,6 +6,8 @@ import 'package:farm/resources/components/round_button.dart';
 import 'package:farm/resources/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key});
@@ -15,6 +18,8 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   bool _isPasswordVisible = false;
+  final regCtrl = Get.put(RegisterController());
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,29 +56,84 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      children: [
-                        // InputFiles(label: "nepali_full_name".tr),
-                        InputFiles(label: "english_full_name".tr),
-                        InputFiles(label: "address".tr),
-                        InputFiles(label: "mobile".tr, inputType: TextInputType.number,),
-                        DatePickerWidget(label: 'dob'.tr,),
-                        InputFiles(
-                          label: "password".tr,
-                          obscureText: !_isPasswordVisible,
-                          suffix: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('english_full_name'.tr, style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primaryColor,
+                          ),),
+                          SizedBox(height: 5,),
+                          TextFormField(
+                            controller: regCtrl.nameController.value,
+                            validator: (value){
+                              if(value!.isEmpty){
+                                Utils.snackBar('name'.tr, 'Enter your name.');
+                                return 'Enter Name';
+                              }
+                              return null;
                             },
-                            child: Icon(
-                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                              color: AppColor.primaryColor,
+                            style: TextStyle(fontSize: 18),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColor.primaryColor),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColor.primaryColor),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+
+                          SizedBox(height: 20,),
+
+                          Text('password'.tr, style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.primaryColor,
+                          ),),
+                          SizedBox(height: 5,),
+                          TextFormField(
+                            obscureText: !regCtrl.isPasswordVisible.value,
+                            controller: regCtrl.passwordController.value,
+                            validator: (value){
+                              if(value!.isEmpty){
+                                Utils.snackBar('name'.tr, 'Enter your name.');
+                                return 'Enter Name';
+                              }
+                              return null;
+                            },
+                            style: TextStyle(fontSize: 18),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColor.primaryColor),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColor.primaryColor),
+                              ),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    regCtrl.togglePasswordVisibility();
+                                  });
+
+                                },
+                                child: Icon(
+                                  regCtrl.isPasswordVisible.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: AppColor.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -89,11 +149,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           right: BorderSide(color: AppColor.primaryColor),
                         ),
                       ),
-                      child: RoundButton(
+                      child: Obx(()=>RoundButton(
+                        loading: regCtrl.loading.value,
                         title: 'sign_up'.tr,
-                        onPress: () {},
+                        onPress: () {
+                          regCtrl.registerFarmApi();
+                        },
                         width: double.infinity,
-                      ),
+                      )),
                     ),
                   ),
                   Row(

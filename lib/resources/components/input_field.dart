@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import the services library
+import 'package:flutter/services.dart';
 import '../app_color.dart';
 
 class InputFiles extends StatefulWidget {
@@ -10,7 +10,9 @@ class InputFiles extends StatefulWidget {
     this.obscureText = false,
     this.suffix,
     this.inputType = TextInputType.text,
-    this.showPrefix = false, // Added a showPrefix parameter with a default value
+    this.showPrefix = false,
+    this.controller,
+    this.validator,
   }) : super(key: key);
 
   final String label;
@@ -18,7 +20,9 @@ class InputFiles extends StatefulWidget {
   final bool obscureText;
   final Widget? suffix;
   final TextInputType inputType;
-  final bool showPrefix; // Added showPrefix parameter
+  final bool showPrefix;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator; // Adjusted the type of validator
 
   @override
   _InputFilesState createState() => _InputFilesState();
@@ -26,6 +30,13 @@ class InputFiles extends StatefulWidget {
 
 class _InputFilesState extends State<InputFiles> {
   bool _isPasswordVisible = false;
+
+  String? _validate(String? value) {
+    if (widget.validator != null) {
+      return widget.validator!(value);
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +55,20 @@ class _InputFilesState extends State<InputFiles> {
           height: 5,
         ),
         TextField(
+          controller: widget.controller,
           style: TextStyle(fontSize: 18),
           obscureText: widget.obscureText && !_isPasswordVisible,
           keyboardType: widget.inputType,
           inputFormatters: widget.inputType == TextInputType.number
               ? [FilteringTextInputFormatter.digitsOnly]
-              : null, // Only allow digits for number input
+              : null,
+          onChanged: (value) {
+            _validate(value); // Call the validator function when the text changes
+            setState(() {}); // Trigger a rebuild to display error messages
+          },
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            errorText: _validate(widget.controller?.text),
             suffixIcon: widget.obscureText
                 ? GestureDetector(
               onTap: () {
@@ -78,11 +95,10 @@ class _InputFilesState extends State<InputFiles> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 widget.prefixText ?? '',
-                style:
-                TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             )
-                : null, // Show prefix only if showPrefix is true
+                : null,
           ),
         ),
         SizedBox(
