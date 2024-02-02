@@ -10,4 +10,8 @@ class AppUrl{
   static const String otpCheck = '$baseUrl/farm_verify';
   static const String farmRegister = '$baseUrl/farm_register';
 
+  // profile call
+
+  static const String userProfile = '$baseUrl/userprofile';
+
 }
