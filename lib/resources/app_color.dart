@@ -13,5 +13,6 @@ class AppColor{
   static const Color mainText = Color(0xffe2fa3c);
   static const Color menuIcon = Color(0xffFFC95E);
   static const Color menuSecondIcon = Color(0xff5EFF79);
+  static const Color checkColor = Color(0xffE1341E);
 
 }
