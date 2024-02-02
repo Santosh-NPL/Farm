@@ -47,7 +47,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Row(
                       children: [
-                        Icon(element['icon'], size: 20, color: AppColor.menuIcon,),
+                        Icon(element['icon'], size: 20, color: AppColor.checkColor,),
                         SizedBox(width: 10,),
                         Text(element['title'], style: TextStyle(fontSize: 15, color: AppColor.white),)
                       ],
@@ -57,7 +57,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
                 Row(
                   children: [
-                    Icon(FontAwesomeIcons.cog, color: AppColor.menuSecondIcon,),
+                    Icon(FontAwesomeIcons.cog, color: AppColor.checkColor,),
                     SizedBox(width: 10,),
                     Text('setting'.tr,
                         style: TextStyle(fontSize: 20, color: AppColor.white, fontWeight: FontWeight.bold)
@@ -67,7 +67,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       width: 2, height: 20, color: AppColor.mainColor,
                     ),
                     SizedBox(width: 10,),
-                    Text("log_out".tr, style: TextStyle(fontSize: 20, color: AppColor.white, fontWeight: FontWeight.bold))
+                    InkWell(
+                        onTap: (){
+
+
+
+                        },
+                        child: Text("log_out".tr, style: TextStyle(fontSize: 20, color: AppColor.white, fontWeight: FontWeight.bold)))
                   ],
                 )
               ],
