@@ -1,3 +1,4 @@
+import 'package:farm/app/controller/login_controller.dart';
 import 'package:farm/resources/app_color.dart';
 import 'package:farm/resources/components/input_field.dart';
 import 'package:farm/resources/components/round_button.dart';
@@ -13,6 +14,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final loginCtrl = Get.put(LoginController());
+  final _formKey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +55,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    children: [
-                      InputFiles(label: "mobile".tr),
-                      InputFiles(label: "password".tr, obscureText: true)
-                    ],
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        InputFiles(label: "mobile".tr, controller: loginCtrl.mobileController.value,),
+                        InputFiles(label: "password".tr, obscureText: true, controller: loginCtrl.passwordController.value,)
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -68,11 +77,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             left: BorderSide(color: AppColor.primaryColor),
                             right: BorderSide(color: AppColor.primaryColor),
                           )),
-                      child: RoundButton(
+                      child: Obx(() => RoundButton(
+                        loading: loginCtrl.loading.value,
                         title: 'login'.tr,
-                        onPress: () {},
+                        onPress: () {
+                          if(_formKey.currentState!.validate()){
+                            loginCtrl.loginAPi();
+
+                          }
+                        },
                         width: double.infinity,
-                      )),
+                      )
+                      )
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

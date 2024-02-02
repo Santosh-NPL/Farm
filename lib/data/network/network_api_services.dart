@@ -6,10 +6,46 @@ import 'dart:io';
 import 'package:farm/data/add_exceptions.dart';
 import 'package:farm/data/network/base_api_services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkApiService extends BaseApiServices {
 
+  Future<dynamic> logoutApi(String url, token) async{
+    dynamic responseJson;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+
+    // preferences.clear();
+
+    try{
+      final response = await http.post(Uri.parse(url), headers: {
+        'Accept':'application/vnd.api+json',
+        'Content-type': 'application/x-www-form-urlencoded',
+        'Authorization' : 'Bearer $token'
+      });
+      print('Status code from logout bas api: '+ response.statusCode.toString());
+
+      if(response.statusCode == 200){
+
+        preferences.clear(); // Clear user data from SharedPreferences
+        // Navigate to login screen
+
+        Get.offAllNamed('/login_screen');
+      }
+      responseJson = returnResponse(response);
+
+      return responseJson;
+
+
+    }on SocketException{
+      throw InternetException();
+    }on RequestTimeOut{
+      throw RequestTimeOut();
+    }
+
+  }
 
 
   @override

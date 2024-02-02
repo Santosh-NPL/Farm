@@ -1,4 +1,5 @@
 import 'package:farm/resources/routes/routes_name.dart';
+import 'package:farm/view/dashboard/dashboard_screen.dart';
 import 'package:farm/view/login/login_screen.dart';
 import 'package:farm/view/signup/mobile_screen.dart';
 import 'package:farm/view/signup/otp_screen.dart';
@@ -33,6 +34,12 @@ class AppRoutes {
         page: () => SignupScreen(),
         transitionDuration: Duration(milliseconds: 250),
         transition: Transition.rightToLeftWithFade),
+
+    GetPage(
+        name: RouteName.dashboardScreen,
+        page: () => DashboardScreen(),
+        transitionDuration: Duration(milliseconds: 250),
+        transition: Transition.fadeIn),
 
 
           ];

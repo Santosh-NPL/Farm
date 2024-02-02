@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 class RegisterController extends GetxController{
 
   final mobileNumber = TextEditingController().obs;
+  final token = TextEditingController().obs;
   final nameController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
 
@@ -15,7 +16,8 @@ class RegisterController extends GetxController{
   @override
   void onInit() {
     // TODO: implement onInit
-    mobileNumber.value.text = Get.arguments;
+    mobileNumber.value.text = Get.arguments[0];
+    token.value.text = Get.arguments[1];
 
     super.onInit();
   }
@@ -31,6 +33,7 @@ class RegisterController extends GetxController{
     loading.value = true;
 
     Map data = {
+      'token': token.value.text,
       'mobile' : mobileNumber.value.text,
       'name' : nameController.value.text,
       'password': passwordController.value.text,
@@ -40,7 +43,6 @@ class RegisterController extends GetxController{
       loading.value = false;
 
       Utils.snackBar('success', 'success full ');
-
 
     }).onError((error, stackTrace){
       loading.value = false;

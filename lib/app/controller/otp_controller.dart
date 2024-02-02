@@ -39,7 +39,7 @@ class OTPController  extends GetxController{
       _api.otpApi(data).then((value){
         loading.value = false;
 
-        Get.offNamed(RouteName.signupScreen, arguments: mobileNumber.value.text);
+        Get.offNamed(RouteName.signupScreen, arguments: [mobileNumber.value.text, oneController.value.text+twoController.value.text+threeController.value.text+fourController.value.text]);
 
       }).onError((error, stackTrace){
         loading.value = false;

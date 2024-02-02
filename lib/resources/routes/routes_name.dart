@@ -6,4 +6,9 @@ class RouteName{
   static const String mobileScreen = '/mobile_screen';
   static const String otpScreen = '/otp_screen';
 
+
+
+
+  static const String dashboardScreen = '/dashboard_screen';
+
 }

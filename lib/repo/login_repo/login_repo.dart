@@ -24,4 +24,9 @@ class LoginRepo{
     return response;
   }
 
+  Future<dynamic> loginApi(var data) async {
+    dynamic res = await _apiService.postApi(data, AppUrl.loginUser);
+    return res;
+  }
+
 }
