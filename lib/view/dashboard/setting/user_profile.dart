@@ -31,7 +31,7 @@ class _UserProfileState extends State<UserProfile> {
           backgroundColor: AppColor.mainColor,
           bottomNavigationBar: CurvedNavigationBar(
             backgroundColor: AppColor.mainColor,
-            color: AppColor.buttonColor,
+            color: AppColor.secondaryColor,
             onTap: (index){
               print(index);
             },
