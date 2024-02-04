@@ -3,6 +3,8 @@ import 'package:farm/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../resources/routes/routes_name.dart';
+
 class RegisterController extends GetxController{
 
   final mobileNumber = TextEditingController().obs;
@@ -42,7 +44,9 @@ class RegisterController extends GetxController{
     _api.regiserFormApi(data).then((value){
       loading.value = false;
 
-      Utils.snackBar('success', 'success full ');
+      Utils.snackBar("success".tr, "user create");
+      Get.offAll(RouteName.loginScreen);
+
 
     }).onError((error, stackTrace){
       loading.value = false;

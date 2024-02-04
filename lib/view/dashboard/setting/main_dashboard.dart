@@ -1,19 +1,26 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:farm/resources/app_color.dart';
+import 'package:farm/view/dashboard/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+
+class MainDashboard extends StatefulWidget {
+  const MainDashboard({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<MainDashboard> createState() => _MainDashboardState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _MainDashboardState extends State<MainDashboard> {
+
+
+
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
   bool isDrawerOpen = false;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +40,14 @@ class _UserProfileState extends State<UserProfile> {
             backgroundColor: AppColor.mainColor,
             color: AppColor.secondaryColor,
             onTap: (index){
-              print(index);
+              setState(() {
+                // Set the selected index when a menu item is tapped
+                selectedIndex = index;
+              });
             },
             items: [
-              Icon(Icons.home),
               Icon(Icons.dashboard),
+              Icon(FontAwesomeIcons.cow),
               Icon(Icons.favorite),
               Icon(Icons.settings),
               Icon(Icons.verified_user),
@@ -83,9 +93,14 @@ class _UserProfileState extends State<UserProfile> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    )
+                    ),
+
+
+
+
                   ],
                 ),
+                Expanded(child: getContentForIndex(selectedIndex))
               ],
             ),
           ),
@@ -93,4 +108,17 @@ class _UserProfileState extends State<UserProfile> {
       ),
     );
   }
+
+
+  // Function to get content based on the selected index
+  Widget getContentForIndex(int index) {
+    switch (index) {
+      case 0:
+        return HomeScreen();
+
+      default:
+        return Container(); // You can replace this with a default content widget
+    }
+  }
 }
+

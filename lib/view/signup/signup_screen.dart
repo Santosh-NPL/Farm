@@ -101,7 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             controller: regCtrl.passwordController.value,
                             validator: (value){
                               if(value!.isEmpty){
-                                Utils.snackBar('name'.tr, 'Enter your name.');
+                                Utils.snackBar('name'.tr, 'Enter your password.');
                                 return 'Enter Name';
                               }
                               return null;
